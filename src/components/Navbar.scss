@@ -1,0 +1,45 @@
+nav {
+  border-bottom: 1px solid #718096;
+
+  .nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // max-width: 1280px;
+    margin: auto;
+    height: 4rem;
+    padding: 0 1rem;
+    ul {
+      display: flex;
+      height: 1rem;
+      li {
+        padding: 0 1rem;
+        font-size: 1.5rem;
+        opacity: 0.75;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    height: 15rem;
+    .nav-container {
+      h1 {
+        margin: 1rem;
+      }
+      flex-direction: column;
+      ul {
+        gap: 5px;
+        flex-direction: column;
+        align-items: center;
+        li {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
