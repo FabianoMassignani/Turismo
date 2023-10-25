@@ -7,6 +7,8 @@ import { HomeOutlined, BarsOutlined } from "@ant-design/icons";
 import { TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 
+import { App } from "../App";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 export const Navbar = (props) => {
@@ -16,20 +18,20 @@ export const Navbar = (props) => {
 
   const items = [
     {
-      key: "1",
+      key: "/",
       icon: <HomeOutlined />,
       label: "Home",
     },
     {
-      key: "2",
+      key: "/users",
       icon: <TeamOutlined />,
       label: "Usuarios",
     },
     {
-      key: "3",
-      icon: <BarsOutlined />,
-      label: 'Passeios',
-    },
+      key: "/users/new",
+      icon: <UserOutlined />,
+      label: "Novo Usuario",
+    }
   ];
 
   return (
@@ -48,19 +50,20 @@ export const Navbar = (props) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
           items={items}
+          onClick={(item) => {
+            navigate(item.key, { replace: true });
+          }}
         />
       </Sider>
 
       <Layout
-        className="site-layout"
         style={{
           marginLeft: 200,
         }}
       >
         <Content>
-          <div></div>
+          <div className="container">{props.children}</div>
         </Content>
       </Layout>
     </Layout>
