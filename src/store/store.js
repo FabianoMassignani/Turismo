@@ -1,11 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { movieListReducer, movieItemReducer } from "./reducers/movie";
+import { userReducer } from "./reducers/user";
 
 export const rootReducer = combineReducers({
-  movieList: movieListReducer,
-  movieItem: movieItemReducer,
+  user: userReducer,
 });
 
 const token = localStorage.getItem("TokenTrakt")
