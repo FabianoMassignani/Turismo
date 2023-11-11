@@ -2,9 +2,11 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { userReducer } from "./reducers/user";
+import { uiReducer } from "./reducers/ui";
 
 export const rootReducer = combineReducers({
   user: userReducer,
+  ui: uiReducer,
 });
 
 const token = localStorage.getItem("TokenTrakt")

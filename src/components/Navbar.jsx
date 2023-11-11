@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { setNavigate } from "../store/actions/ui";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -11,19 +13,24 @@ import {
   CalendarOutlined,
   IdcardOutlined,
   UnorderedListOutlined,
+  BarsOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
+
 import { Layout, Menu, theme } from "antd";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export const Navbar = (props) => {
+  const ui = useSelector((state) => state.ui);
+  const optionNavigate = ui.navigate;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [collapsed, setCollapsed] = useState(false);
 
   const { Header, Content, Footer, Sider } = Layout;
-  const { type } = props;
 
   const user = { permissions: ["home", "login", "perfil"] };
   const uerrLogado = { permissions: ["perfil", "reserva"] };
@@ -31,57 +38,45 @@ export const Navbar = (props) => {
     permissions: ["perfil", "passeio", "pacote", "reserva"],
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const { token } = user;
-  //     if (token) {
-  //       dispatch({ type: "LOAD_USER", payload: { token } });
-  //     }
-  //   }
-  // });
+  useEffect(() => {
+    if (user) {
+      const { token } = user;
+
+      if (token) {
+        dispatch({ type: "LOAD_USER", payload: { token } });
+      }
+    }
+  });
+
+  useEffect(() => {
+    navigate(optionNavigate, { replace: true });
+  }, [dispatch, optionNavigate]);
 
   let items = [
+    { label: "Inicio", key: "/", icon: <HomeOutlined />, permission: "home" },
     {
-      key: "/",
-      icon: <HomeOutlined style={{ fontSize: "16px" }} />,
-      label: "Home",
-      permission: "home",
-    },
-    {
-      key: "/login",
-      icon: <TeamOutlined style={{ fontSize: "16px" }} />,
-      label: "Login",
-      permission: "login",
-    },
-    {
-      key: "/user",
-      icon: <IdcardOutlined style={{ fontSize: "16px" }} />,
-      label: "Pefil",
+      label: "Perfil",
+      key: "/perfil",
+      icon: <IdcardOutlined />,
       permission: "perfil",
     },
     {
-      key: "/reservation",
-      icon: <UnorderedListOutlined style={{ fontSize: "16px" }} />,
-      label: "Reservas",
-      permission: "reserva",
+      label: "Login",
+      key: "/login",
+      icon: <LogoutOutlined />,
+      permission: "login",
     },
     {
-      key: "/passeios",
-      icon: <CarOutlined />,
       label: "Passeios",
-      permission: "passeio",
-    },
-    {
-      key: "/pacotes",
-      icon: <ShoppingCartOutlined style={{ fontSize: "16px" }} />,
-      label: "Pacotes",
+      key: "/passeio",
+      icon: <ShoppingCartOutlined />,
       permission: "pacote",
     },
   ];
 
   items = items.map((item) => {
     if (item.permission) {
-      if (user.permissions.includes(item.permission)) {
+      if (userAdmin.permissions.includes(item.permission)) {
         return item;
       }
     }
@@ -105,13 +100,13 @@ export const Navbar = (props) => {
       >
         <div className="nav" />
         <Menu
-          theme="dark"
-          mode="inline"
-          items={items}
-          defaultSelectedKeys={["/"]}
+          selectedKeys={[optionNavigate]}
           onClick={(item) => {
             navigate(item.key, { replace: true });
+            dispatch(setNavigate(item.key));
           }}
+          items={items}
+          theme="dark"
         />
       </Sider>
 
