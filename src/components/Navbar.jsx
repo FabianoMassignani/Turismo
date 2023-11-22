@@ -76,7 +76,7 @@ export const Navbar = (props) => {
 
   items = items.map((item) => {
     if (item.permission) {
-      if (userAdmin.permissions.includes(item.permission)) {
+      if (user.permissions.includes(item.permission)) {
         return item;
       }
     }
