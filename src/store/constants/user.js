@@ -4,3 +4,6 @@ export const GET_LOGIN = "GET_LOGIN";
 export const POST_REGISTER_REQUEST = "POST_REGISTER_REQUEST";
 export const POST_REGISTER = "POST_REGISTER";
 
+export const GET_USER_REQUEST = "GET_USER_REQUEST";
+export const GET_USER = "GET_USER";
+

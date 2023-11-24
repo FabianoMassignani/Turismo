@@ -5,6 +5,7 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Perfil } from "./pages/Perfil";
 import { Passeio } from "./pages/Passeio";
+import { Reservas } from "./pages/Reservas";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/passeio" element={<Passeio />} />
+          <Route path="/reserva" element={<Reservas />} />
           <Route element={<NotFoundPage />} />
         </Routes>
       </div>

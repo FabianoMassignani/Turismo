@@ -1,25 +1,23 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Button, Checkbox, Form, Input } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, DatePicker, Checkbox, Form, Select, Input } from "antd";
+
 import { Navbar } from "../components/Navbar";
 import { onRegistrar, onLogar } from "../store/actions/user";
 import { useState } from "react";
 
 export const Login = () => {
   const dispatch = useDispatch();
-
   const [openCadastro, setOpenCadastro] = useState(false);
+  const userState = useSelector((state) => state.user);
+  const { Option } = Select;
 
-  const onLogar = (values) => {
-    console.log("logar", values);
-
-    dispatch(onRegistrar(values));
+  const onLogin = async (values) => {
+    dispatch(onLogar(values));
   };
 
-  const onRegistrar = (values) => {
-    console.log("registrar", values);
-
-    dispatch(onLogar(values));
+  const onRegister = (values) => {
+    dispatch(onRegistrar(values));
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -42,19 +40,10 @@ export const Login = () => {
             {!openCadastro ? (
               <Form
                 name="Login"
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  maxWidth: 600,
-                }}
                 initialValues={{
                   remember: true,
                 }}
-                onFinish={onLogar}
+                onFinish={onLogin}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
               >
@@ -95,7 +84,7 @@ export const Login = () => {
                   <Checkbox>Lembrar</Checkbox>
                 </Form.Item>
 
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", gap: "15px" }}>
                   <Form.Item>
                     <Button type="primary" htmlType="submit">
                       Login
@@ -111,26 +100,30 @@ export const Login = () => {
               </Form>
             ) : (
               <Form
-                name="Login"
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  maxWidth: 600,
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={onRegistrar}
+                name="Register"
+                onFinish={onRegister}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                initialValues={{
+                  remember: false,
+                }}
               >
                 <Form.Item
-                  label="Username"
-                  name="username"
+                  label="Nome"
+                  name="nome"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your nome!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  label="Email"
+                  name="email"
                   rules={[
                     {
                       required: true,
@@ -154,7 +147,50 @@ export const Login = () => {
                   <Input.Password />
                 </Form.Item>
 
-                <div style={{ display: "flex" }}>
+                <Form.Item
+                  label="Data de Nascimento"
+                  name="dataNascimento"
+                  rules={[
+                    {
+                      required: false,
+                      message: "Please input your Data de Nascimento!",
+                    },
+                  ]}
+                >
+                  <DatePicker />
+                </Form.Item>
+
+                <Form.Item
+                  label="Telefone"
+                  name="telefone"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your telefone!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  label="Tipo"
+                  name="identificacao"
+                  defaultValue="cliente"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your tipo!",
+                    },
+                  ]}
+                >
+                  <Select>
+                    <Option value="cliente">cliente</Option>
+                    <Option value="admin">admin</Option>
+                  </Select>
+                </Form.Item>
+
+                <div style={{ display: "flex", gap: "15px" }}>
                   <Form.Item>
                     <Button type="primary" htmlType="submit">
                       Registrar

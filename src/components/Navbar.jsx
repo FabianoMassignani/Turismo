@@ -17,13 +17,13 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 
-import { Layout, Menu, theme } from "antd";
-
-const { Header, Content, Footer, Sider } = Layout;
+import { Layout, Menu } from "antd";
 
 export const Navbar = (props) => {
   const ui = useSelector((state) => state.ui);
   const optionNavigate = ui.navigate;
+  const userState = useSelector((state) => state.user);
+  const { user, token } = userState;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,53 +32,60 @@ export const Navbar = (props) => {
 
   const { Header, Content, Footer, Sider } = Layout;
 
-  const user = { permissions: ["home", "login", "perfil"] };
-  const uerrLogado = { permissions: ["perfil", "reserva"] };
-  const userAdmin = {
-    permissions: ["perfil", "passeio", "pacote", "reserva"],
-  };
+  const { identificacao = "publico" } = user;
 
-  useEffect(() => {
-    if (user) {
-      const { token } = user;
-
-      if (token) {
-        dispatch({ type: "LOAD_USER", payload: { token } });
-      }
-    }
-  });
+  useEffect(() => {});
 
   useEffect(() => {
     navigate(optionNavigate, { replace: true });
   }, [dispatch, optionNavigate]);
 
   let items = [
-    { label: "Inicio", key: "/", icon: <HomeOutlined />, permission: "home" },
+    {
+      label: "Inicio",
+      key: "/",
+      icon: <HomeOutlined />,
+      permission: ["publico", "cliente", "admin"],
+    },
     {
       label: "Perfil",
       key: "/perfil",
       icon: <IdcardOutlined />,
-      permission: "perfil",
-    },
-    {
-      label: "Login",
-      key: "/login",
-      icon: <LogoutOutlined />,
-      permission: "login",
+      permission: ["perfil", , "cliente"],
     },
     {
       label: "Passeios",
       key: "/passeio",
       icon: <ShoppingCartOutlined />,
-      permission: "pacote",
+      permission: ["cliente","admin"],
+    },
+    {
+      label: "Reservas",
+      key: "/reserva",
+      icon: <CalendarOutlined />,
+      permission: ["cliente"],
     },
   ];
 
+  if (token) {
+    items.push({
+      label: "Logout",
+      key: "/logout",
+      icon: <LogoutOutlined />,
+      permission: ["publico", , "cliente"],
+    });
+  } else {
+    items.push({
+      label: "Login",
+      key: "/login",
+      icon: <LogoutOutlined />,
+      permission: ["publico", , "cliente"],
+    });
+  }
+
   items = items.map((item) => {
-    if (item.permission) {
-      if (user.permissions.includes(item.permission)) {
-        return item;
-      }
+    if (item.permission.includes(identificacao)) {
+      return item;
     }
   });
 
@@ -102,7 +109,12 @@ export const Navbar = (props) => {
         <Menu
           selectedKeys={[optionNavigate]}
           onClick={(item) => {
-            navigate(item.key, { replace: true });
+            if (item.key === "/logout") {
+              dispatch({ type: "LOGOUT" });
+              dispatch(setNavigate("/"));
+              return;
+            }
+
             dispatch(setNavigate(item.key));
           }}
           items={items}

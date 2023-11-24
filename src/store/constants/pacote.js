@@ -1,0 +1,2 @@
+export const GET_PACOTES_REQUEST = "GET_PACOTES_REQUEST";
+export const GET_PACOTES = "GET_PACOTES";

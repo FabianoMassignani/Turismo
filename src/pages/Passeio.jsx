@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Avatar, List, Rate, Skeleton } from "antd";
 import { Table, Modal, Descriptions, Button } from "antd";
 import { Navbar } from "../components/Navbar";
 
+import { getPasseios } from "../store/actions/passeio";
+
 export const Passeio = () => {
+  const userState = useSelector((state) => state.user);
+  const passeioState = useSelector((state) => state.passeio);
+
+  const { token } = userState;
+  const { passeios } = passeioState;
+
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
+  useEffect(() => {
+    dispatch(getPasseios(token));
+  }, []);
+
   const columns = [
     {
-      title: "Nome",
-      dataIndex: "nome",
-      key: "nome",
+      title: "destino",
+      dataIndex: "destino",
+      key: "destino",
     },
     {
       title: "Ativo",
@@ -24,69 +39,17 @@ export const Passeio = () => {
       dataIndex: "valor",
       key: "valor",
     },
-    {
-      title: "Origem",
-      dataIndex: "origem",
-      key: "origem",
-    },
-    {
-      title: "Destino",
-      dataIndex: "destino",
-      key: "destino",
-    },
-    {
-      title: "Ações",
-      key: "acoes",
-      render: (text, record) => (
-        <div style={{ display: "flex", gap: 10 }}>
-          <Button
-            type="primary"
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            Editar
-          </Button>
-
-          <Button
-            type="primary"
-            onClick={() => {
-              setOpen2(true);
-            }}
-          >
-            Histórico
-          </Button>
-        </div>
-      ),
-    },
   ];
 
-  const data2 = [
-    {
-      key: "1",
-      nome: "Pacote 1",
-      ativo: true,
-      valor: 100,
-      origem: "São Paulo",
-      destino: "Rio de Janeiro",
-    },
-    {
-      key: "2",
-      nome: "Pacote 2",
-      ativo: true,
-      valor: 200,
-      origem: "São Paulo",
-      destino: "Rio de Janeiro",
-    },
-    {
-      key: "3",
-      nome: "Pacote 3",
-      ativo: true,
-      valor: 300,
-      origem: "São Paulo",
-      destino: "Rio de Janeiro",
-    },
-  ];
+  const data = passeios.map((passeio) => {
+    return {
+      key: passeio.id,
+      destino: passeio.destino,
+      ativo: passeio.ativo,
+      valor: passeio.valor,
+      quantidadeMaximaPessoas: passeio.quantidadeMaximaPessoas,
+    };
+  });
 
   return (
     <Navbar
@@ -94,7 +57,7 @@ export const Passeio = () => {
         <>
           <h1>Gerenciar Passeios</h1>
 
-          <Table columns={columns} dataSource={data2} pagination={false} />
+          <Table columns={columns} dataSource={data} pagination={false} />
 
           <Modal
             open={open}

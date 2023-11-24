@@ -1,29 +1,32 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Descriptions } from "antd";
 import { Navbar } from "../components/Navbar";
 
 export const Perfil = () => {
+  const userState = useSelector((state) => state.user);
+  const { user } = userState;
+
   const items = [
     {
       key: "1",
       label: "Nome",
-      children: "John Brown",
+      children: user.nome,
     },
     {
       key: "2",
-      label: "Telefone",
-      children: "123456789",
+      label: "Email",
+      children: user.email,
     },
     {
       key: "3",
-      label: "Cidade",
-      children: "São Paulo",
+      label: "Telefone",
+      children: user.telefone,
     },
     {
-      key: "5",
-      label: "endereço",
-      children:
-        "Rua dos Bobos, nº 0, Bairro: Vila do Chaves, CEP: 00000-000, São Paulo - SP",
+      key: "4",
+      label: "Data de Nascimento",
+      children: user.dataNascimento,
     },
   ];
 
@@ -31,7 +34,7 @@ export const Perfil = () => {
     <Navbar
       children={
         <>
-          <Descriptions title="User Info" items={items} />
+          <Descriptions title="Perfil" items={items} />
         </>
       }
     />

@@ -1,25 +1,25 @@
 import axios from "axios";
 
 import {
-    GET_PASSEIOS_REQUEST,
-    GET_PASSEIOS,
-} from "../constants/passeio";
+    GET_PAGAMENTO_REQUEST,
+    GET_PAGAMENTO,
+} from "../constants/pacote";
 
 import { API_URL } from "../../globalVariables";
 
-export const getPasseios = (token) => async (dispatch) => {
-    dispatch({ type: GET_PASSEIOS_REQUEST });
+export const getPagamento = (token) => async (dispatch) => {
+    dispatch({ type: GET_PAGAMENTO_REQUEST });
 
-    await axios.get(`${API_URL}/passeio`, {
+    await axios.get(`${API_URL}/pagamento`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
         .then(response => {
             dispatch({
-                type: GET_PASSEIOS,
+                type: GET_PAGAMENTO,
                 payload: {
-                    passeios: response.data,
+                    pagamento: response.data,
                 },
             });
         })
@@ -27,6 +27,3 @@ export const getPasseios = (token) => async (dispatch) => {
             console.log(error);
         });
 }
-
-
-
