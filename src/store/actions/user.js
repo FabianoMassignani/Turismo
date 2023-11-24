@@ -68,7 +68,7 @@ export const onRegistrar = (data) => async (dispatch) => {
     nome: data.nome,
     telefone: data.telefone,
     dataAniversario: data.dataAniversario,
-    identificacao: 'cliente',
+    identificacao: data.identificacao,
   };
 
   const config = {

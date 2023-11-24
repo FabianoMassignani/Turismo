@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, DatePicker, Checkbox, Form, Select, Input } from "antd";
+import { Button, DatePicker, Checkbox, Form, Radio, Input } from "antd";
 
 import { Navbar } from "../components/Navbar";
 import { onRegistrar, onLogar } from "../store/actions/user";
@@ -10,7 +10,6 @@ export const Login = () => {
   const dispatch = useDispatch();
   const [openCadastro, setOpenCadastro] = useState(false);
   const userState = useSelector((state) => state.user);
-  const { Option } = Select;
 
   const onLogin = async (values) => {
     dispatch(onLogar(values));
@@ -106,6 +105,7 @@ export const Login = () => {
                 autoComplete="off"
                 initialValues={{
                   remember: false,
+                  identificacao: "cliente",
                 }}
               >
                 <Form.Item
@@ -173,21 +173,11 @@ export const Login = () => {
                   <Input />
                 </Form.Item>
 
-                <Form.Item
-                  label="Tipo"
-                  name="identificacao"
-                  defaultValue="cliente"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your tipo!",
-                    },
-                  ]}
-                >
-                  <Select>
-                    <Option value="cliente">cliente</Option>
-                    <Option value="admin">admin</Option>
-                  </Select>
+                <Form.Item label="Tipo" initialValue={'cliente'} name="identificacao">
+                  <Radio.Group>
+                    <Radio.Button value="cliente">cliente</Radio.Button>
+                    <Radio.Button value="admin">admin</Radio.Button>
+                  </Radio.Group>
                 </Form.Item>
 
                 <div style={{ display: "flex", gap: "15px" }}>

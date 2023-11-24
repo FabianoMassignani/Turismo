@@ -7,7 +7,7 @@ import {
 
 import { API_URL_NODE } from "../../globalVariables";
 
-export const getAvaliacao = (token) => async (dispatch) => {
+export const getAvaliacao = () => async (dispatch) => {
     dispatch({ type: GET_AVALIACAO_REQUEST });
 
     await axios.get(`${API_URL_NODE}/avaliacao`)
