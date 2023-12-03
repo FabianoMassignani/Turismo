@@ -26,7 +26,7 @@ export const Perfil = () => {
     {
       key: "4",
       label: "Data de Nascimento",
-      children: user.dataNascimento,
+      children: user.dataAniversario,
     },
   ];
 

@@ -11,6 +11,7 @@ import { pacoteReducer } from "./reducers/pacote";
 import { pagamentoReducer } from "./reducers/pagamento";
 import { reservaReducer } from "./reducers/reserva";
 
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -24,6 +25,7 @@ export const rootReducer = combineReducers({
   pacote: pacoteReducer,
   pagamento: pagamentoReducer,
   reserva: reservaReducer,
+  pacote: pacoteReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

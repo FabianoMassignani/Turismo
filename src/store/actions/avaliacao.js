@@ -24,5 +24,32 @@ export const getAvaliacao = () => async (dispatch) => {
         });
 }
 
+export const postAvaliacao = (data, token) => async (dispatch) => {
+    dispatch({ type: POST_PASSEIO_REQUEST });
+
+    data = {
+        ...data
+    };
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    await axios
+        .post(`${API_URL_NODE}/avaliacao`, data, config)
+        .then(function (res) {
+            dispatch({
+                type: POST_PASSEIO,
+                payload: {
+                    passeio: res.data,
+                },
+            });
+        })
+        .catch((err) => console.log(err));
+}
+
 
 

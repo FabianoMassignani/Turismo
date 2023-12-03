@@ -3,6 +3,12 @@ import axios from "axios";
 import {
     GET_PASSEIOS_REQUEST,
     GET_PASSEIOS,
+    POST_PASSEIO_REQUEST,
+    POST_PASSEIO,
+    DELETE_PASSEIO_REQUEST,
+    DELETE_PASSEIO,
+    UPDATE_PASSEIO_REQUEST,
+    UPDATE_PASSEIO,
 } from "../constants/passeio";
 
 import { API_URL } from "../../globalVariables";
@@ -29,4 +35,74 @@ export const getPasseios = (token) => async (dispatch) => {
 }
 
 
+export const postPasseio = (data, token, callback) => async (dispatch) => {
+    dispatch({ type: POST_PASSEIO_REQUEST });
 
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    await axios
+        .post(`${API_URL}/passeio`, data, config)
+        .then(function (res) {
+            dispatch({
+                type: POST_PASSEIO,
+                payload: {
+                    passeio: res.data,
+                },
+            });
+
+            callback();
+        })
+        .catch((err) => console.log(err));
+}
+
+export const deletePasseio = (data, token, callback) => async (dispatch) => {
+    dispatch({ type: DELETE_PASSEIO_REQUEST });
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    try {
+        const res = await axios.delete(`${API_URL}/passeio/${data.key}`, config);
+        dispatch({
+            type: DELETE_PASSEIO,
+        });
+
+        callback();
+    } catch (error) {
+        console.error("Error deleting passeio:", error);
+        // Dispatch an error action or handle the error as needed
+    }
+};
+
+
+export const updatePasseio = (data, token, callback) => async (dispatch) => {
+    dispatch({ type: UPDATE_PASSEIO_REQUEST });
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    await axios
+        .put(`${API_URL}/passeio/${data.key}`, data, config)
+        .then(function (res) {
+            dispatch({
+                type: UPDATE_PASSEIO,
+                payload: {
+                    passeio: res.data,
+                },
+            });
+
+            callback();
+        })
+        .catch((err) => console.log(err));
+}

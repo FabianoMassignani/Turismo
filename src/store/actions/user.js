@@ -6,7 +6,14 @@ import {
   POST_REGISTER,
   POST_REGISTER_REQUEST,
   GET_USER_REQUEST,
-  GET_USER
+  GET_USER,
+  GET_USERS_REQUEST,
+  GET_USERS,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER,
+  DELETE_USER_REQUEST,
+  DELETE_USER,
+  GET_LOGIN_FAIL
 } from "../constants/user";
 
 import { API_URL } from "../../globalVariables";
@@ -33,8 +40,13 @@ export const onLogar = (data) => async (dispatch) => {
 
       if (res.data.token)
         dispatch(getUser(res.data.token, data.username));
+
+
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+
+    }
+    );
 }
 
 export const getUser = (token, username) => async (dispatch) => {
@@ -46,20 +58,50 @@ export const getUser = (token, username) => async (dispatch) => {
     }
   })
     .then(response => {
+      if (response.status === 200) {
+        dispatch({
+          type: GET_USER,
+          payload: {
+            user: response.data,
+          },
+        });
+
+        dispatch(setNavigate("/"));
+      }
+    })
+    .catch(error => {
       dispatch({
-        type: GET_USER,
+        type: GET_LOGIN_FAIL,
         payload: {
-          user: response.data,
+          token: null,
+          message: "Usuário ou senha inválidos"
         },
       });
-      dispatch(setNavigate("/"));
+    });
+}
+
+export const getUsers = () => async (dispatch) => {
+  dispatch({ type: GET_USERS_REQUEST });
+
+  await axios.get(`${API_URL}/pessoa`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      dispatch({
+        type: GET_USERS,
+        payload: {
+          users: response.data,
+        },
+      });
     })
     .catch(error => {
       console.log(error);
     });
 }
 
-export const onRegistrar = (data) => async (dispatch) => {
+export const onRegistrar = (data, callback) => async (dispatch) => {
   dispatch({ type: POST_REGISTER_REQUEST });
 
   data = {
@@ -86,7 +128,24 @@ export const onRegistrar = (data) => async (dispatch) => {
           user: res.data,
         },
       });
+
+      callback();
     })
     .catch((err) => console.log(err));
 }
 
+export const deleteUser = (id, token) => async (dispatch) => {
+  dispatch({ type: DELETE_USER_REQUEST });
+
+  await axios.delete(`${API_URL}/pessoa/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+    .then(response => {
+      dispatch(getUsers());
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}

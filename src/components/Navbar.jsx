@@ -63,15 +63,20 @@ export const Navbar = (props) => {
       label: "Reservas",
       key: "/reserva",
       icon: <CalendarOutlined />,
-      permission: ["cliente"],
+      permission: ["cliente", "admin"],
+    },
+    {
+      label: "Pacotes",
+      key: "/pacote",
+      icon: <BarsOutlined />,
+      permission: ["admin"],
     },
     {
       label: "Clientes",
-      key: "/cliente",
+      key: "/users",
       icon: <TeamOutlined />,
-      permission: ["admin"],
+      permission: ["publico", "admin"],
     },
-    
   ];
 
   if (token) {
@@ -79,14 +84,14 @@ export const Navbar = (props) => {
       label: "Logout",
       key: "/logout",
       icon: <LogoutOutlined />,
-      permission: ["publico", , "cliente"],
+      permission: ["publico", , "cliente", "admin"],
     });
   } else {
     items.push({
       label: "Login",
       key: "/login",
       icon: <LogoutOutlined />,
-      permission: ["publico", , "cliente"],
+      permission: ["publico", , "cliente", "admin"],
     });
   }
 
@@ -118,7 +123,7 @@ export const Navbar = (props) => {
           onClick={(item) => {
             if (item.key === "/logout") {
               dispatch({ type: "LOGOUT" });
-              dispatch(setNavigate("/"));
+              dispatch(setNavigate("/login"));
               return;
             }
 

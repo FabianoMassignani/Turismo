@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, DatePicker, Checkbox, Form, Radio, Input } from "antd";
-
+import { setNavigate } from "../store/actions/ui";
 import { Navbar } from "../components/Navbar";
 import { onRegistrar, onLogar } from "../store/actions/user";
 import { useState } from "react";
@@ -11,12 +11,20 @@ export const Login = () => {
   const [openCadastro, setOpenCadastro] = useState(false);
   const userState = useSelector((state) => state.user);
 
+  const callback = () => {
+    dispatch(setNavigate("/"));
+  };
+
   const onLogin = async (values) => {
-    dispatch(onLogar(values));
+    dispatch(onLogar(values, callback));
+  };
+
+  const callbackRegister = () => {
+    setOpenCadastro(false);
   };
 
   const onRegister = (values) => {
-    dispatch(onRegistrar(values));
+    dispatch(onRegistrar(values, callbackRegister));
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -149,7 +157,7 @@ export const Login = () => {
 
                 <Form.Item
                   label="Data de Nascimento"
-                  name="dataNascimento"
+                  name="dataAniversario"
                   rules={[
                     {
                       required: false,
@@ -173,7 +181,11 @@ export const Login = () => {
                   <Input />
                 </Form.Item>
 
-                <Form.Item label="Tipo" initialValue={'cliente'} name="identificacao">
+                <Form.Item
+                  label="Tipo"
+                  initialValue={"cliente"}
+                  name="identificacao"
+                >
                   <Radio.Group>
                     <Radio.Button value="cliente">cliente</Radio.Button>
                     <Radio.Button value="admin">admin</Radio.Button>

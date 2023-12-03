@@ -3,9 +3,15 @@ import axios from "axios";
 import {
     GET_RESERVA_REQUEST,
     GET_RESERVA,
+    POST_RESERVA_REQUEST,
+    POST_RESERVA,
+    DELETE_RESERVA_REQUEST,
+    DELETE_RESERVA,
+
 } from "../constants/reserva";
 
 import { API_URL } from "../../globalVariables";
+
 
 export const getReserva = (token) => async (dispatch) => {
     dispatch({ type: GET_RESERVA_REQUEST });
@@ -26,6 +32,55 @@ export const getReserva = (token) => async (dispatch) => {
         .catch(error => {
             console.log(error);
         });
+}
+
+export const postReserva = (data, token, callback) => async (dispatch) => {
+    dispatch({ type: POST_RESERVA_REQUEST });
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    await axios
+        .post(`${API_URL}/reserva`, data, config)
+        .then(function (res) {
+            dispatch({
+                type: POST_RESERVA,
+                payload: {
+                    reserva: res.data,
+                },
+            });
+
+            callback();
+        })
+        .catch((err) => console.log(err));
+}
+
+
+
+export const deleteReserva = (data, token, callback) => async (dispatch) => {
+    dispatch({ type: DELETE_RESERVA_REQUEST });
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    await axios
+        .delete(`${API_URL}/reserva/${data.key}`, config)
+        .then(function (res) {
+            dispatch({
+                type: DELETE_RESERVA,
+            });
+
+            callback();
+        })
+        .catch((err) => console.log(err));
 }
 
 

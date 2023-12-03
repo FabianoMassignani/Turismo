@@ -4,11 +4,14 @@ import {
   POST_REGISTER,
   POST_REGISTER_REQUEST,
   GET_USER_REQUEST,
-  GET_USER
+  GET_USER,
+  GET_USERS_REQUEST,
+  GET_USERS,
+  GET_LOGIN_FAIL
 } from "../constants/user";
 
 export const userReducer = (
-  state = { user: {}, token: undefined, loading: false },
+  state = { user: {}, users: [], token: undefined, loading: false },
   action
 ) => {
   switch (action.type) {
@@ -20,6 +23,12 @@ export const userReducer = (
         loading: false,
         token: action.payload.token,
       };
+    case GET_LOGIN_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
     case GET_USER_REQUEST:
       return { ...state, loading: true }
     case GET_USER:
@@ -27,6 +36,14 @@ export const userReducer = (
         ...state,
         loading: false,
         user: action.payload.user,
+      }
+    case GET_USERS_REQUEST:
+      return { ...state, loading: true }
+    case GET_USERS:
+      return {
+        ...state,
+        loading: false,
+        users: action.payload.users,
       }
     case POST_REGISTER_REQUEST:
       return { ...state, loading: true }
