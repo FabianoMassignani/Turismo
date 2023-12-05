@@ -54,12 +54,6 @@ export const Navbar = (props) => {
       permission: ["perfil", , "cliente"],
     },
     {
-      label: "Passeios",
-      key: "/passeio",
-      icon: <ShoppingCartOutlined />,
-      permission: ["admin"],
-    },
-    {
       label: "Reservas",
       key: "/reserva",
       icon: <CalendarOutlined />,
@@ -72,10 +66,16 @@ export const Navbar = (props) => {
       permission: ["admin"],
     },
     {
+      label: "Passeios",
+      key: "/passeio",
+      icon: <ShoppingCartOutlined />,
+      permission: ["admin"],
+    },
+    {
       label: "Clientes",
       key: "/users",
       icon: <TeamOutlined />,
-      permission: ["publico", "admin"],
+      permission: ["admin", "publico"],
     },
   ];
 

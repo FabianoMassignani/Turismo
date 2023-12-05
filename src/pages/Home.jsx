@@ -17,6 +17,7 @@ import {
   Avatar,
   Skeleton,
   Rate,
+  TextArea,
 } from "antd";
 
 import {
@@ -26,8 +27,8 @@ import {
   deletePacote,
 } from "../store/actions/pacote";
 
-import { getPasseios } from "../store/actions/passeio";
-import { postReserva } from "../store/actions/reserva";
+import { getPasseios, postComentario } from "../store/actions/passeio";
+import { postReserva, getReserva } from "../store/actions/reserva";
 
 export const Home = () => {
   const [form] = Form.useForm();
@@ -40,13 +41,18 @@ export const Home = () => {
   const { token, user } = userState;
   const { pacotes } = pacoteState;
   const { passeios } = passeioState;
+  const { reservas } = reservaState;
+
   const { identificacao = "publico" } = user;
+
+  const { TextArea } = Input;
 
   const dispatch = useDispatch();
 
   const desc = ["terrible", "bad", "normal", "good", "wonderful"];
   const [value, setValue] = useState(3);
   const [openComentarios, setOpenComentarios] = useState(false);
+  const [newComentarios, setNewComentarios] = useState(false);
   const [currentPasseio, setCurrentPasseio] = useState({ passeiosIds: [] });
 
   useEffect(() => {
@@ -56,6 +62,21 @@ export const Home = () => {
   const onLoad = () => {
     dispatch(getPacotes(token));
     dispatch(getPasseios(token));
+    dispatch(getReserva(token));
+  };
+
+  const onComentario = () => {
+    const values = form.getFieldsValue();
+
+    const data = {
+      ...values,
+      nota: value,
+      pacote: { id: currentPasseio.key },
+      pessoa: { id: user.id },
+      data: new Date(),
+    };
+
+    dispatch(postComentario(data, token, onLoad));
   };
 
   const onReservar = (record) => {
@@ -100,6 +121,19 @@ export const Home = () => {
             }}
           >
             <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                setNewComentarios(true);
+                setCurrentPasseio(record);
+              }}
+            >
+              Adicionar Comentário
+            </Button>
+
+            <Button
+              disabled={reservas.find(
+                (item) => item?.pacote?.id === record.key
+              )}
               type="primary"
               onClick={(e) => {
                 e.stopPropagation();
@@ -230,6 +264,57 @@ export const Home = () => {
                 )}
               />
             </>
+          </Modal>
+
+          <Modal
+            open={newComentarios}
+            width={600}
+            onCancel={() => {
+              setNewComentarios(false);
+            }}
+            cancelText="Sair"
+            onOk={() => {
+              onComentario();
+            }}
+            okText="Enviar"
+          >
+            <Form
+              form={form}
+              autoComplete="off"
+              initialValues={{
+                remember: false,
+              }}
+            >
+              <div style={{ display: "grid", gap: "10px", paddingTop: "40px" }}>
+                <Form.Item
+                  label="Nota"
+                  name="nota"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your nota!",
+                    },
+                  ]}
+                >
+                  <Rate tooltips={desc} />
+                </Form.Item>
+
+                <Form.Item
+                  label="Comentario"
+                  name="comentario"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your comentario!",
+                    },
+                  ]}
+                >
+                  <TextArea rows={4} />
+                </Form.Item>
+                <br />
+                <br />
+              </div>
+            </Form>
           </Modal>
         </div>
       }

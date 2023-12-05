@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Table,
-  Tag,
-  Modal,
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Switch,
-} from "antd";
+import { Table, Tag, Modal, Button, Form } from "antd";
 import { Navbar } from "../components/Navbar";
 
-import { getReserva, deleteReserva } from "../store/actions/reserva";
+import {
+  getReserva,
+  deleteReserva,
+  updateReserva,
+} from "../store/actions/reserva";
 
 export const Reserva = () => {
   const [form] = Form.useForm();
@@ -46,8 +41,8 @@ export const Reserva = () => {
   };
 
   const columns = [
-    { title: "Pacote", dataIndex: "reservaPacote", key: "reservaPacote" },
-    { title: "Cliente", dataIndex: "reservaUser", key: "reservaUser" },
+    { title: "Pacote", dataIndex: "nomePacote", key: "nomePacote" },
+    { title: "Cliente", dataIndex: "nomeCliente", key: "nomeCliente" },
     { title: "Data", dataIndex: "data", key: "data" },
     {
       title: "Reserva Aceita",
@@ -74,9 +69,30 @@ export const Reserva = () => {
             justifyContent: "center",
           }}
         >
-          {identificacao === "admin" && (
-            <Button type="primary" loading={loading} onClick={() => {}}>
+          {identificacao === "admin" && record.reservaAceita === false && (
+            <Button
+              type="primary"
+              loading={loading}
+              onClick={() => {
+                record.reservaAceita = true;
+                dispatch(updateReserva(record, token, callback));
+              }}
+            >
               Aceitar Reserva
+            </Button>
+          )}
+
+          {identificacao === "admin" && record.reservaAceita === true && (
+            <Button
+              type="primary"
+              loading={loading}
+              danger  
+              onClick={() => {
+                record.reservaAceita = false;
+                dispatch(updateReserva(record, token, callback));
+              }}
+            >
+              Cancelar Reserva
             </Button>
           )}
 
@@ -84,6 +100,7 @@ export const Reserva = () => {
             <Button
               type="primary"
               danger
+              disabled={record.reservaAceita === true}
               loading={loading}
               onClick={() => {
                 deleteReserv(record);
@@ -98,30 +115,25 @@ export const Reserva = () => {
   ];
 
   let data = reservas.map((reserva) => {
-    let reservaPacote = pacotes.find(
-      (pacote) => pacote.key === reserva.pacoteId
-    );
-    let reservaUser = users.find((user) => user.key === reserva.userId);
-
     reserva.data = reserva.data.split("T")[0];
 
     if (identificacao === "admin")
       return {
+        ...reserva,
         key: reserva.id,
         data: reserva.data,
-        quantidadePessoas: reserva.quantidadePessoas,
-        reservaPacote: reservaPacote.nome,
-        reservaUser: reservaUser.nome,
-        reservaAceita: reserva.reservaAceita,
+        nomePacote: reserva?.pacote?.nome | "Sem Pacote",
+        nomeCliente: reserva?.pessoa?.nome | "Sem Cliente",
+        reservaAceita: reserva.reservaAceita === true ? true : false,
       };
 
-    if (identificacao === "cliente" && reserva.key === user.id)
+    if (identificacao === "cliente" && reserva?.pessoa?.id === user.id)
       return {
+        ...reserva,
         key: reserva.id,
         data: reserva.data,
-        quantidadePessoas: reserva.quantidadePessoas,
-        reservaPacote: reservaPacote.nome,
-        reservaUser: reservaUser.nome,
+        nomePacote: reserva?.pacote?.nome | "Sem Pacote",
+        nomeCliente: reserva?.pessoa?.nome | "Sem Cliente",
         reservaAceita: reserva.reservaAceita,
       };
 

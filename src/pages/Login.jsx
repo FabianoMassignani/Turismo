@@ -11,6 +11,8 @@ export const Login = () => {
   const [openCadastro, setOpenCadastro] = useState(false);
   const userState = useSelector((state) => state.user);
 
+  const { loading } = userState;
+
   const callback = () => {
     dispatch(setNavigate("/"));
   };
@@ -93,13 +95,16 @@ export const Login = () => {
 
                 <div style={{ display: "flex", gap: "15px" }}>
                   <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" loading={loading} htmlType="submit">
                       Login
                     </Button>
                   </Form.Item>
 
                   <Form.Item>
-                    <Button onClick={() => setOpenCadastro(true)}>
+                    <Button
+                      loading={loading}
+                      onClick={() => setOpenCadastro(true)}
+                    >
                       Cadastrar
                     </Button>
                   </Form.Item>

@@ -7,7 +7,8 @@ import {
     POST_RESERVA,
     DELETE_RESERVA_REQUEST,
     DELETE_RESERVA,
-
+    PUT_RESERVA_REQUEST,
+    PUT_RESERVA,
 } from "../constants/reserva";
 
 import { API_URL } from "../../globalVariables";
@@ -82,6 +83,39 @@ export const deleteReserva = (data, token, callback) => async (dispatch) => {
         })
         .catch((err) => console.log(err));
 }
+
+export const updateReserva = (data, token, callback) => async (dispatch) => {
+    dispatch({ type: PUT_RESERVA_REQUEST });
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    data = {
+        ...data,
+        data: new Date(data.data),
+        id: data.key,
+    }
+
+    await axios
+        .put(`${API_URL}/reserva/${data.id}`, data, config)
+        .then(function (res) {
+            dispatch({
+                type: PUT_RESERVA,
+            });
+
+            callback();
+        })
+        .catch((err) => console.log(err));
+}
+
+
+
+
+
 
 
 
