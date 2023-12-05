@@ -15,9 +15,6 @@ COPY . .
 # Build the React app for production
 RUN npm run build
 
-# Use an official Nginx image as the final image
-FROM nginx:1.17.1-alpine
-
 # Copy the nginx configuration file
 COPY nginx.conf /etc/nginx/nginx.conf
 
