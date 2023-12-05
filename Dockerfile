@@ -1,4 +1,5 @@
-FROM nginx:1.17.1-alpine
+# Stage 1: Build Stage
+FROM node:14 AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -14,6 +15,9 @@ COPY . .
 
 # Build the React app for production
 RUN npm run build
+
+# Stage 2: Final Stage
+FROM nginx:1.17.1-alpine
 
 # Copy the nginx configuration file
 COPY nginx.conf /etc/nginx/nginx.conf
