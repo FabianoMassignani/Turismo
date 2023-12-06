@@ -25,8 +25,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy the static files from the build stage
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
-
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
