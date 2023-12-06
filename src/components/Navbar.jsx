@@ -75,7 +75,7 @@ export const Navbar = (props) => {
       label: "Clientes",
       key: "/users",
       icon: <TeamOutlined />,
-      permission: ["admin", "publico"],
+      permission: ["admin", ],
     },
   ];
 

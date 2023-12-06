@@ -9,11 +9,8 @@ import {
   GET_USER,
   GET_USERS_REQUEST,
   GET_USERS,
-  UPDATE_USER_REQUEST,
-  UPDATE_USER,
   DELETE_USER_REQUEST,
-  DELETE_USER,
-  GET_LOGIN_FAIL
+  GET_LOGIN_FAIL,
 } from "../constants/user";
 
 import { API_URL } from "../../globalVariables";
@@ -44,7 +41,13 @@ export const onLogar = (data) => async (dispatch) => {
 
     })
     .catch((err) => {
-
+      dispatch({
+        type: GET_LOGIN_FAIL,
+        payload: {
+          token: null,
+          message: "Usuário ou senha inválidos"
+        },
+      });
     }
     );
 }

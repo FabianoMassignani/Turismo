@@ -13,12 +13,12 @@ import {
 
 import { API_URL } from "../../globalVariables";
 
-export const getPacotes = (token) => async (dispatch) => {
+export const getPacotes = () => async (dispatch) => {
     dispatch({ type: GET_PACOTES_REQUEST });
 
     await axios.get(`${API_URL}/pacote`, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json',
         }
     })
         .then(response => {

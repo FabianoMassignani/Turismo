@@ -7,7 +7,8 @@ import {
   GET_USER,
   GET_USERS_REQUEST,
   GET_USERS,
-  GET_LOGIN_FAIL
+  GET_LOGIN_FAIL,
+  GET_USER_FAIL
 } from "../constants/user";
 
 export const userReducer = (
@@ -16,7 +17,7 @@ export const userReducer = (
 ) => {
   switch (action.type) {
     case GET_LOGIN_REQUEST:
-      return { ...state, loading: true, };
+      return { ...state, loading: true };
     case GET_LOGIN:
       return {
         ...state,
@@ -36,6 +37,12 @@ export const userReducer = (
         ...state,
         loading: false,
         user: action.payload.user,
+      }
+    case GET_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
       }
     case GET_USERS_REQUEST:
       return { ...state, loading: true }
@@ -59,6 +66,7 @@ export const userReducer = (
         user: {},
       };
     default:
-      return state;
+
+      return { ...state }
   }
 };

@@ -17,6 +17,6 @@ export const pacoteReducer = (
                 pacotes: action.payload.pacotes,
             };
         default:
-            return state;
+            return { ...state }
     }
 };

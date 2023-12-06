@@ -11,16 +11,18 @@ import {
     UPDATE_PASSEIO,
     POST_COMENTARIO_REQUEST,
     POST_COMENTARIO,
+    GET_COMENTARIOS_REQUEST,
+    GET_COMENTARIOS,
 } from "../constants/passeio";
 
 import { API_URL, API_URL_NODE } from "../../globalVariables";
 
-export const getPasseios = (token) => async (dispatch) => {
+export const getPasseios = () => async (dispatch) => {
     dispatch({ type: GET_PASSEIOS_REQUEST });
 
     await axios.get(`${API_URL}/passeio`, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json',
         }
     })
         .then(response => {
@@ -117,7 +119,7 @@ export const updatePasseio = (data, token, callback) => async (dispatch) => {
 //     comentario: req.body.comentario,
 //   });
 
-export const postComentario = (data, token, callback) => async (dispatch) => {
+export const postComentario = (data, callback) => async (dispatch) => {
     dispatch({ type: POST_COMENTARIO_REQUEST });
 
     const config = {
@@ -127,7 +129,7 @@ export const postComentario = (data, token, callback) => async (dispatch) => {
     };
 
     await axios
-        .post(`${API_URL_NODE}/`, data, config)
+        .post(`${API_URL_NODE}/avaliacao`, data, config)
         .then(function (res) {
             dispatch({
                 type: POST_COMENTARIO,
@@ -140,4 +142,29 @@ export const postComentario = (data, token, callback) => async (dispatch) => {
         })
         .catch((err) => console.log(err));
 
+}
+
+export const getComentarios = (data) => async (dispatch) => {
+    dispatch({ type: GET_COMENTARIOS_REQUEST });
+
+    await axios.get(`${API_URL_NODE}/avaliacao`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            params: {
+                idPasseio: data.idPasseio,
+            }
+        })
+        .then(response => {
+            dispatch({
+                type: GET_COMENTARIOS,
+                payload: {
+                    comentarios: response.data,
+                },
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
 }

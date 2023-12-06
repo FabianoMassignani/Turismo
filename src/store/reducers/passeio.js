@@ -1,6 +1,8 @@
 import {
     GET_PASSEIOS,
     GET_PASSEIOS_REQUEST,
+    GET_COMENTARIOS_REQUEST,
+    GET_COMENTARIOS,
 
 } from "../constants/passeio";
 
@@ -17,7 +19,15 @@ export const passeioReducer = (
                 loading: false,
                 passeios: action.payload.passeios,
             };
+        case GET_COMENTARIOS_REQUEST:
+            return { ...state, loading: true, };
+        case GET_COMENTARIOS:
+            return {
+                ...state,
+                loading: false,
+                comentarios: action.payload.comentarios,
+            };
         default:
-            return state;
+            return { ...state }
     }
 };

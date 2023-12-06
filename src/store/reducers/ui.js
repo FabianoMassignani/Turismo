@@ -10,6 +10,6 @@ export const uiReducer = (
         case SET_UI:
             return { ...state, navigate: action.payload, };
         default:
-            return state;
+            return { ...state }
     }
 };

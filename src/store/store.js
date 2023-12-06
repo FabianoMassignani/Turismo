@@ -25,12 +25,11 @@ export const rootReducer = combineReducers({
   pacote: pacoteReducer,
   pagamento: pagamentoReducer,
   reserva: reservaReducer,
-  pacote: pacoteReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-let initialState;
+let initialState = {};
 
 const middleware = [thunk];
 

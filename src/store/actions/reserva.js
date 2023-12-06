@@ -14,12 +14,12 @@ import {
 import { API_URL } from "../../globalVariables";
 
 
-export const getReserva = (token) => async (dispatch) => {
+export const getReserva = () => async (dispatch) => {
     dispatch({ type: GET_RESERVA_REQUEST });
 
     await axios.get(`${API_URL}/reserva`, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json',
         }
     })
         .then(response => {

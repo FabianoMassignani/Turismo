@@ -4,7 +4,7 @@ import {
 } from "../constants/avaliacao";
 
 export const avaliacaoReducer = (
-    state = { AVALIACAO: [], loading: false },
+    state = { avaliacoes: [], loading: false },
     action
 ) => {
     switch (action.type) {
@@ -14,9 +14,9 @@ export const avaliacaoReducer = (
             return {
                 ...state,
                 loading: false,
-                avaliacao: action.payload.avaliacao,
+                avaliacoes: action.payload.avaliacao,
             };
         default:
-            return state;
+            return { ...state }
     }
 };

@@ -27,7 +27,11 @@ import {
   deletePacote,
 } from "../store/actions/pacote";
 
-import { getPasseios, postComentario } from "../store/actions/passeio";
+import {
+  getPasseios,
+  postComentario,
+  getComentarios,
+} from "../store/actions/passeio";
 import { postReserva, getReserva } from "../store/actions/reserva";
 
 export const Home = () => {
@@ -38,7 +42,7 @@ export const Home = () => {
   const reservaState = useSelector((state) => state.reserva);
 
   const { loading } = reservaState;
-  const { token, user } = userState;
+  const { token, user = {}, users } = userState;
   const { pacotes } = pacoteState;
   const { passeios } = passeioState;
   const { reservas } = reservaState;
@@ -55,14 +59,24 @@ export const Home = () => {
   const [newComentarios, setNewComentarios] = useState(false);
   const [currentPasseio, setCurrentPasseio] = useState({ passeiosIds: [] });
 
+  const { comentarios = [] } = passeioState;
+
   useEffect(() => {
     onLoad();
   }, []);
 
   const onLoad = () => {
-    dispatch(getPacotes(token));
-    dispatch(getPasseios(token));
-    dispatch(getReserva(token));
+    dispatch(getPacotes());
+    dispatch(getPasseios());
+    dispatch(getReserva());
+  };
+
+  const callback = () => {
+    setNewComentarios(false);
+    setOpenComentarios(false);
+    form.resetFields();
+    onLoad();
+    getComen();
   };
 
   const onComentario = () => {
@@ -70,13 +84,23 @@ export const Home = () => {
 
     const data = {
       ...values,
-      nota: value,
-      pacote: { id: currentPasseio.key },
-      pessoa: { id: user.id },
-      data: new Date(),
+      classificacao: value,
+      idPasseio: currentPasseio.key,
+      idUsuario: user.id,
+      dataAvaliacao: new Date(),
     };
 
-    dispatch(postComentario(data, token, onLoad));
+    dispatch(postComentario(data, callback));
+  };
+
+  const callbackgetComentarios = () => {};
+
+  const getComen = (id) => {
+    const data = {
+      idPasseio: id || currentPasseio.key,
+    };
+
+    dispatch(getComentarios(data, callbackgetComentarios));
   };
 
   const onReservar = (record) => {
@@ -177,13 +201,21 @@ export const Home = () => {
     {
       key: "4",
       label: "Passeios",
-      children: currentPasseio.passeiosIds.forEach((item) => {
-        item = passeios.find((passeio) => passeio.id === item.id);
+      // currentPasseio.passeiosIds.forEach((item) => {
+      //   item = passeios.find((passeio) => passeio.id === item.id);
 
-        return item.nome;
-      }),
+      //   return item.nome;
+      // }),
+      children: currentPasseio.passeiosIds.map((item) => item.nome).join(", "),
     },
   ];
+
+  const comentarioData = comentarios.map((item) => {
+    return {
+      comentario: item.comentario,
+      classificacao: item.classificacao,
+    };
+  });
 
   return (
     <Navbar
@@ -201,6 +233,7 @@ export const Home = () => {
                   e.stopPropagation();
                   setOpenComentarios(true);
                   setCurrentPasseio(record);
+                  getComen(record.key);
                 },
               };
             }}
@@ -225,41 +258,21 @@ export const Home = () => {
               <h3>Comentarios</h3>
 
               <List
-                className="demo-loadmore-list"
-                loading={false}
+                className="comment-list"
                 itemLayout="horizontal"
-                dataSource={[]}
+                dataSource={comentarioData}
                 renderItem={(item) => (
                   <List.Item>
-                    <Skeleton
-                      avatar
-                      title={false}
-                      // loading={item.loading}
-                      active
-                    >
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.picture.large} />}
-                        title={
-                          <a href="https://ant.design">{item.name?.last}</a>
-                        }
-                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                      />
+                    <List.Item.Meta description={item.comentario} />
 
-                      <span>
-                        <Rate
-                          tooltips={desc}
-                          onChange={setValue}
-                          value={value}
-                        />
-                        {value ? (
-                          <span className="ant-rate-text">
-                            {desc[value - 1]}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </span>
-                    </Skeleton>
+                    <span>
+                      <Rate
+                        tooltips={desc}
+                        onChange={setValue}
+                        value={item.classificacao}
+                      />
+                      {value ? <span className="ant-rate-text">{}</span> : ""}
+                    </span>
                   </List.Item>
                 )}
               />

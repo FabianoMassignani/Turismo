@@ -26,6 +26,6 @@ export const reservaReducer = (
                 loading: false,
             }
         default:
-            return state;
+            return { ...state }
     }
 };

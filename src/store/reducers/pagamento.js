@@ -17,6 +17,6 @@ export const pagamentoReducer = (
                 pagamento: action.payload.pagamento,
             };
         default:
-            return state;
+            return { ...state }
     }
 };

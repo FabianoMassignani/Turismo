@@ -43,6 +43,7 @@ export const Reserva = () => {
   const columns = [
     { title: "Pacote", dataIndex: "nomePacote", key: "nomePacote" },
     { title: "Cliente", dataIndex: "nomeCliente", key: "nomeCliente" },
+    { title: "Preço", dataIndex: "preco", key: "preco" },
     { title: "Data", dataIndex: "data", key: "data" },
     {
       title: "Reserva Aceita",
@@ -86,7 +87,7 @@ export const Reserva = () => {
             <Button
               type="primary"
               loading={loading}
-              danger  
+              danger
               onClick={() => {
                 record.reservaAceita = false;
                 dispatch(updateReserva(record, token, callback));
@@ -122,8 +123,9 @@ export const Reserva = () => {
         ...reserva,
         key: reserva.id,
         data: reserva.data,
-        nomePacote: reserva?.pacote?.nome | "Sem Pacote",
-        nomeCliente: reserva?.pessoa?.nome | "Sem Cliente",
+        nomePacote: reserva?.pacote?.nome,
+        preco: reserva?.pacote?.preco,
+        nomeCliente: reserva?.pessoa?.nome,
         reservaAceita: reserva.reservaAceita === true ? true : false,
       };
 
@@ -132,8 +134,9 @@ export const Reserva = () => {
         ...reserva,
         key: reserva.id,
         data: reserva.data,
-        nomePacote: reserva?.pacote?.nome | "Sem Pacote",
-        nomeCliente: reserva?.pessoa?.nome | "Sem Cliente",
+        preco: reserva?.pacote?.preco,
+        nomePacote: reserva?.pacote?.nome,
+        nomeCliente: reserva?.pessoa?.nome,
         reservaAceita: reserva.reservaAceita,
       };
 
