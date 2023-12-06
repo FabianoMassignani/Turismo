@@ -1,13 +1,19 @@
 # Stage 1: Build Stage
-FROM node:14 AS build
+FROM node:14 AS builder
+
+# Set the working directory
 WORKDIR /app
 
-COPY package.json package.json
-COPY package-lock.json package-lock.json
-RUN npm ci
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-COPY public/ public
-COPY src/ src
+# Install dependencies
+RUN npm install
+
+# Copy the entire project to the working directory
+COPY . .
+
+# Build the React app for production
 RUN npm run build
 
 # Stage 2: Final Stage
@@ -17,7 +23,7 @@ FROM nginx:1.17.1-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy the static files from the build stage
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
