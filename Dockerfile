@@ -1,5 +1,6 @@
+# Stage 1: Build Stage
 FROM node:14 AS build
-WORKDIR /build
+WORKDIR /app
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
@@ -16,7 +17,7 @@ FROM nginx:1.17.1-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy the static files from the build stage
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
