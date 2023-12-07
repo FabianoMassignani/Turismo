@@ -8,12 +8,14 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm start
 
-FROM nginx:1.17.1-alpine
+# RUN npm run build
 
-COPY nginx.conf /etc/nginx/nginx.conf
+# FROM nginx:1.17.1-alpine
 
-COPY --from=builder /app/build /usr/share/nginx/html
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+# COPY --from=builder /app/build /usr/share/nginx/html
+
+# CMD ["nginx", "-g", "daemon off;"]
