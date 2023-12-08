@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Table,
-  Form,
-  Modal,
-  Button,
-  Input,
-  InputNumber,
-  Select,
-  Switch,
-  Space,
-} from "antd";
+import { Table, Form, Modal, Button } from "antd";
 import { Navbar } from "../components/Navbar";
 
 import {
@@ -30,14 +20,13 @@ export const Pacote = () => {
   const passeioState = useSelector((state) => state.passeio);
 
   const { token } = userState;
-  const { pacotes, loading } = pacoteState;
+  const { pacotes, loadingP } = pacoteState;
   const { passeios } = passeioState;
 
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+
   const [openAdicionar, setOpenAdicionar] = useState(false);
   const [openEditar, setOpenEditar] = useState(false);
-  const [openExcluir, setOpenExcluir] = useState(false);
   const [currentPacote, setCurrentPacote] = useState({});
 
   useEffect(() => {
@@ -58,7 +47,6 @@ export const Pacote = () => {
     form.resetFields();
     setOpenAdicionar(false);
     setOpenEditar(false);
-    setOpenExcluir(false);
   };
 
   const onAdicionar = () => {
@@ -100,15 +88,15 @@ export const Pacote = () => {
       key: "preco",
     },
     {
+      title: "Passeios",
+      dataIndex: "passeios",
+      key: "passeios",
+    },
+    {
       title: "Ativo",
       dataIndex: "ativo",
       key: "ativo",
       render: (text) => (text ? "Sim" : "Não"),
-    },
-    {
-      title: "Passeios",
-      dataIndex: "passeios",
-      key: "passeios",
     },
     {
       dataIndex: "acoes",
@@ -134,7 +122,6 @@ export const Pacote = () => {
             size="small"
             onClick={() => {
               onExcluir(record);
-              setOpenExcluir(true);
             }}
           >
             Excluir
@@ -178,7 +165,7 @@ export const Pacote = () => {
             columns={columns}
             dataSource={data}
             pagination={false}
-            loading={loading}
+            loading={loadingP}
           />
 
           <Modal

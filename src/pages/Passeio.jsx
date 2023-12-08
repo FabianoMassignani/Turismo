@@ -19,7 +19,7 @@ export const Passeio = () => {
   const passeioState = useSelector((state) => state.passeio);
 
   const { token } = userState;
-  const { passeios } = passeioState;
+  const { passeios, loadingPas } = passeioState;
 
   const dispatch = useDispatch();
   const [openHistorico, setopenHistorico] = useState(false);
@@ -119,6 +119,7 @@ export const Passeio = () => {
               setOpenEditar(true);
               setCurrentPasseio(record);
             }}
+            loading={loadingPas}
           >
             Editar
           </Button>
@@ -128,6 +129,7 @@ export const Passeio = () => {
               onHistorico(record);
               setCurrentPasseio(record);
             }}
+            loading={loadingPas}
           >
             Histórico
           </Button>
@@ -136,6 +138,7 @@ export const Passeio = () => {
             onClick={() => {
               onExcluir(record);
             }}
+            loading={loadingPas}
           >
             Excluir
           </Button>
@@ -173,7 +176,12 @@ export const Passeio = () => {
             </Button>
           </div>
 
-          <Table columns={columns} dataSource={data} pagination={false} />
+          <Table
+            loading={loadingPas}
+            columns={columns}
+            dataSource={data}
+            pagination={false}
+          />
 
           <Modal
             open={openEditar}

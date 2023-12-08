@@ -4,16 +4,16 @@ import {
 } from "../constants/pacote";
 
 export const pacoteReducer = (
-    state = { pacotes: [], loading: false },
+    state = { pacotes: [], loadingP: false },
     action
 ) => {
     switch (action.type) {
         case GET_PACOTES_REQUEST:
-            return { ...state, loading: true, };
+            return { ...state, loadingP: true, };
         case GET_PACOTES:
             return {
                 ...state,
-                loading: false,
+                loadingP: false,
                 pacotes: action.payload.pacotes,
             };
         default:

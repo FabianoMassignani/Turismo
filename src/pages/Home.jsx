@@ -41,11 +41,10 @@ export const Home = () => {
   const passeioState = useSelector((state) => state.passeio);
   const reservaState = useSelector((state) => state.reserva);
 
-  const { loading } = reservaState;
-  const { token, user = {}, users } = userState;
-  const { pacotes } = pacoteState;
-  const { passeios } = passeioState;
-  const { reservas } = reservaState;
+  const { token, user = {}, users, loadingU } = userState;
+  const { pacotes, loadingP } = pacoteState;
+  const { passeios, loadingPas } = passeioState;
+  const { reservas, loadingR } = reservaState;
 
   const { identificacao = "publico" } = user;
 
@@ -59,13 +58,15 @@ export const Home = () => {
   const [newComentarios, setNewComentarios] = useState(false);
   const [currentPasseio, setCurrentPasseio] = useState({ passeiosIds: [] });
 
-  const { comentarios = [] } = passeioState;
+  const { comentarios = [], loadingA } = passeioState;
 
   useEffect(() => {
     onLoad();
   }, []);
 
   const onLoad = () => {
+    if (loadingPas || loadingP || loadingR || loadingU) return;
+
     dispatch(getPacotes());
     dispatch(getPasseios());
     dispatch(getReserva());
@@ -163,7 +164,7 @@ export const Home = () => {
                 e.stopPropagation();
                 onReservar(record);
               }}
-              loading={loading}
+              loading={loadingR}
             >
               Reservar
             </Button>
@@ -226,6 +227,7 @@ export const Home = () => {
           <Table
             columns={columns}
             dataSource={data}
+            loading={loadingP}
             pagination={false}
             onRow={(record, rowIndex) => {
               return {
@@ -245,6 +247,7 @@ export const Home = () => {
             onCancel={() => {
               setOpenComentarios(false);
             }}
+            loading={loadingP}
             cancelText="Sair"
             okButtonProps={{ style: { display: "none" } }}
           >
@@ -261,12 +264,14 @@ export const Home = () => {
                 className="comment-list"
                 itemLayout="horizontal"
                 dataSource={comentarioData}
+                loading={loadingA}
                 renderItem={(item) => (
                   <List.Item>
                     <List.Item.Meta description={item.comentario} />
 
                     <span>
                       <Rate
+                        count={5}
                         tooltips={desc}
                         onChange={setValue}
                         value={item.classificacao}
@@ -282,6 +287,8 @@ export const Home = () => {
           <Modal
             open={newComentarios}
             width={600}
+            loading={loadingA}
+            confirmLoading={loadingA}
             onCancel={() => {
               setNewComentarios(false);
             }}
@@ -309,7 +316,7 @@ export const Home = () => {
                     },
                   ]}
                 >
-                  <Rate tooltips={desc} />
+                  <Rate tooltips={desc} count={5} />
                 </Form.Item>
 
                 <Form.Item

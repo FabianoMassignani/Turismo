@@ -4,16 +4,16 @@ import {
 } from "../constants/avaliacao";
 
 export const avaliacaoReducer = (
-    state = { avaliacoes: [], loading: false },
+    state = { avaliacoes: [], loadingA: false },
     action
 ) => {
     switch (action.type) {
         case GET_AVALIACAO_REQUEST:
-            return { ...state, loading: true, };
+            return { ...state, loadingA: true, };
         case GET_AVALIACAO:
             return {
                 ...state,
-                loading: false,
+                loadingA: false,
                 avaliacoes: action.payload.avaliacao,
             };
         default:

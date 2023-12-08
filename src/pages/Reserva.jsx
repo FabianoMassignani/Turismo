@@ -18,7 +18,7 @@ export const Reserva = () => {
 
   const { token, users, user } = userState;
   const { pacotes } = pacoteState;
-  const { reservas, loading } = reservaState;
+  const { reservas, loadingR } = reservaState;
   const { identificacao = "publico" } = user;
 
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ export const Reserva = () => {
     { title: "Preço", dataIndex: "preco", key: "preco" },
     { title: "Data", dataIndex: "data", key: "data" },
     {
-      title: "Reserva Aceita",
+      title: "Aceita",
       dataIndex: "reservaAceita",
       key: "reservaAceita",
       render: (text, record) => (
@@ -73,7 +73,7 @@ export const Reserva = () => {
           {identificacao === "admin" && record.reservaAceita === false && (
             <Button
               type="primary"
-              loading={loading}
+              loading={loadingR}
               onClick={() => {
                 record.reservaAceita = true;
                 dispatch(updateReserva(record, token, callback));
@@ -86,7 +86,7 @@ export const Reserva = () => {
           {identificacao === "admin" && record.reservaAceita === true && (
             <Button
               type="primary"
-              loading={loading}
+              loading={loadingR}
               danger
               onClick={() => {
                 record.reservaAceita = false;
@@ -102,7 +102,7 @@ export const Reserva = () => {
               type="primary"
               danger
               disabled={record.reservaAceita === true}
-              loading={loading}
+              loading={loadingR}
               onClick={() => {
                 deleteReserv(record);
               }}
@@ -151,7 +151,12 @@ export const Reserva = () => {
         <div style={{ display: "grid", gap: "20px" }}>
           <h1>Reservas</h1>
 
-          <Table columns={columns} dataSource={data} pagination={false} />
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={false}
+            loading={loadingR}
+          />
         </div>
       }
     />

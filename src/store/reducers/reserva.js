@@ -6,24 +6,24 @@ import {
 } from "../constants/reserva";
 
 export const reservaReducer = (
-    state = { reservas: [], loading: false },
+    state = { reservas: [], loadingR: false },
     action
 ) => {
     switch (action.type) {
         case GET_RESERVA_REQUEST:
-            return { ...state, loading: true, };
+            return { ...state, loadingR: true, };
         case GET_RESERVA:
             return {
                 ...state,
-                loading: false,
+                loadingR: false,
                 reservas: action.payload.reservas,
             };
         case DELETE_RESERVA_REQUEST:
-            return { ...state, loading: true }
+            return { ...state, loadingR: true }
         case DELETE_RESERVA:
             return {
                 ...state,
-                loading: false,
+                loadingR: false,
             }
         default:
             return { ...state }

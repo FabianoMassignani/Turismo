@@ -7,24 +7,24 @@ import {
 } from "../constants/passeio";
 
 export const passeioReducer = (
-    state = { passeios: [], loading: false },
+    state = { passeios: [], loadingPas: false },
     action
 ) => {
     switch (action.type) {
         case GET_PASSEIOS_REQUEST:
-            return { ...state, loading: true, };
+            return { ...state, loadingPas: true, };
         case GET_PASSEIOS:
             return {
                 ...state,
-                loading: false,
+                loadingPas: false,
                 passeios: action.payload.passeios,
             };
         case GET_COMENTARIOS_REQUEST:
-            return { ...state, loading: true, };
+            return { ...state, loadingPas: true, };
         case GET_COMENTARIOS:
             return {
                 ...state,
-                loading: false,
+                loadingPas: false,
                 comentarios: action.payload.comentarios,
             };
         default:

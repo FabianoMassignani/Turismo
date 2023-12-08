@@ -12,52 +12,52 @@ import {
 } from "../constants/user";
 
 export const userReducer = (
-  state = { user: {}, users: [], token: undefined, loading: false },
+  state = { user: {}, users: [], token: undefined, loadingU: false },
   action
 ) => {
   switch (action.type) {
     case GET_LOGIN_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loadingU: true };
     case GET_LOGIN:
       return {
         ...state,
-        loading: false,
+        loadingU: false,
         token: action.payload.token,
       };
     case GET_LOGIN_FAIL:
       return {
         ...state,
-        loading: false,
+        loadingU: false,
         message: action.payload.message,
       };
     case GET_USER_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loadingU: true }
     case GET_USER:
       return {
         ...state,
-        loading: false,
+        loadingU: false,
         user: action.payload.user,
       }
     case GET_USER_FAIL:
       return {
         ...state,
-        loading: false,
+        loadingU: false,
         message: action.payload.message,
       }
     case GET_USERS_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loadingU: true }
     case GET_USERS:
       return {
         ...state,
-        loading: false,
+        loadingU: false,
         users: action.payload.users,
       }
     case POST_REGISTER_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loadingU: true }
     case POST_REGISTER:
       return {
         ...state,
-        loading: false,
+        loadingU: false,
       }
     case "LOGOUT":
       return {

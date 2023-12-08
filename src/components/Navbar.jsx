@@ -34,8 +34,6 @@ export const Navbar = (props) => {
 
   const { identificacao = "publico" } = user;
 
-  useEffect(() => {});
-
   useEffect(() => {
     navigate(optionNavigate, { replace: true });
   }, [dispatch, optionNavigate]);
@@ -75,7 +73,7 @@ export const Navbar = (props) => {
       label: "Clientes",
       key: "/users",
       icon: <TeamOutlined />,
-      permission: ["admin", ],
+      permission: ["admin"],
     },
   ];
 

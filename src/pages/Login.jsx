@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, DatePicker, Checkbox, Form, Radio, Input } from "antd";
 import { setNavigate } from "../store/actions/ui";
@@ -10,8 +10,8 @@ export const Login = () => {
   const dispatch = useDispatch();
   const [openCadastro, setOpenCadastro] = useState(false);
   const userState = useSelector((state) => state.user);
-
-  const { loading } = userState;
+  const email = localStorage.getItem("email");
+  const { loadingU } = userState;
 
   const callback = () => {
     dispatch(setNavigate("/"));
@@ -19,6 +19,10 @@ export const Login = () => {
 
   const onLogin = async (values) => {
     dispatch(onLogar(values, callback));
+
+    const { username } = values;
+
+    localStorage.setItem("email", username);
   };
 
   const callbackRegister = () => {
@@ -51,6 +55,7 @@ export const Login = () => {
                 name="Login"
                 initialValues={{
                   remember: true,
+                  username: email,
                 }}
                 onFinish={onLogin}
                 onFinishFailed={onFinishFailed}
@@ -95,14 +100,14 @@ export const Login = () => {
 
                 <div style={{ display: "flex", gap: "15px" }}>
                   <Form.Item>
-                    <Button type="primary" loading={loading} htmlType="submit">
+                    <Button type="primary" loading={loadingU} htmlType="submit">
                       Login
                     </Button>
                   </Form.Item>
 
                   <Form.Item>
                     <Button
-                      loading={loading}
+                      loading={loadingU}
                       onClick={() => setOpenCadastro(true)}
                     >
                       Cadastrar
@@ -199,7 +204,7 @@ export const Login = () => {
 
                 <div style={{ display: "flex", gap: "15px" }}>
                   <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button loading={loadingU} type="primary" htmlType="submit">
                       Registrar
                     </Button>
                   </Form.Item>

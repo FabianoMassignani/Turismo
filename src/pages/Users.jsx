@@ -9,8 +9,8 @@ import { getUsers, updateUser, deleteUser } from "../store/actions/user";
 export const Users = () => {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
-  const { users = [] } = userState;
-  const { token } = userState;
+  const { users = [], loadingU, token } = userState;
+
   useEffect(() => {
     dispatch(getUsers());
   }, []);
@@ -38,6 +38,7 @@ export const Users = () => {
           onClick={() => {
             dispatch(deleteUser(record.key, token));
           }}
+          loading={loadingU}
         >
           Excluir
         </Button>
@@ -60,7 +61,12 @@ export const Users = () => {
         <>
           <h1>Usuarios</h1>
 
-          <Table columns={columns} dataSource={data} pagination={false} />
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={false}
+            loading={loadingU}
+          />
         </>
       }
     />
