@@ -54,7 +54,7 @@ export const PacoteForm = (props) => {
         />
       </Form.Item>
 
-      <Form.Item label="Ativo" name="ativo">
+      <Form.Item label="Ativo" name={"checked"} valuePropName="checked">
         <Switch />
       </Form.Item>
     </div>

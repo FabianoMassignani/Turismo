@@ -20,14 +20,14 @@ export const Pacote = () => {
   const passeioState = useSelector((state) => state.passeio);
 
   const { token } = userState;
-  const { pacotes, loadingP } = pacoteState;
+  const { pacotes = [], loadingP } = pacoteState;
   const { passeios } = passeioState;
 
   const dispatch = useDispatch();
 
   const [openAdicionar, setOpenAdicionar] = useState(false);
   const [openEditar, setOpenEditar] = useState(false);
-  const [currentPacote, setCurrentPacote] = useState({});
+  const [currentPacote, setCurrentPacote] = useState({ passeios: [] });
 
   useEffect(() => {
     onLoad();
@@ -89,8 +89,8 @@ export const Pacote = () => {
     },
     {
       title: "Passeios",
-      dataIndex: "passeios",
-      key: "passeios",
+      dataIndex: "passeiosNome",
+      key: "passeiosNome",
     },
     {
       title: "Ativo",
@@ -115,11 +115,13 @@ export const Pacote = () => {
               setOpenEditar(true);
               setCurrentPacote(record);
             }}
+            loading={loadingP}
           >
             Editar
           </Button>
           <Button
             size="small"
+            loading={loadingP}
             onClick={() => {
               onExcluir(record);
             }}
@@ -137,12 +139,17 @@ export const Pacote = () => {
     });
 
     return {
+      ...item,
       key: item.id,
       nome: item.nome,
       ativo: item.ativo,
       preco: item.preco,
-      passeios: passeios.join(", "),
+      passeiosNome: passeios.join(", "),
     };
+  });
+
+  const acurrentPacoteP = currentPacote?.passeios.map((item) => {
+    return item.id;
   });
 
   return (
@@ -186,8 +193,8 @@ export const Pacote = () => {
               initialValues={{
                 nome: currentPacote.nome,
                 preco: currentPacote.preco,
-                passeios: currentPacote.passeios,
-                ativo: currentPacote.ativo,
+                passeios: acurrentPacoteP,
+                checked: currentPacote.ativo,
               }}
             >
               <PacoteForm passeios={passeios} />

@@ -75,9 +75,7 @@ export const updatePacote = (data, token, callback) => async (dispatch) => {
         .then(response => {
             dispatch({
                 type: UPDATE_PACOTE,
-                payload: {
-                    pacote: response.data,
-                },
+
             });
 
             callback();

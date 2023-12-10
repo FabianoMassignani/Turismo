@@ -69,7 +69,7 @@ export const PasseioForm = () => {
         <InputNumber />
       </Form.Item>
 
-      <Form.Item label="Ativo" name="ativo">
+      <Form.Item label="Ativo" name="ativo" valuePropName="checked">
         <Switch />
       </Form.Item>
     </div>
