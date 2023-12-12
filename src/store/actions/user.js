@@ -21,8 +21,10 @@ export const onLogar = (data) => async (dispatch) => {
 
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+
+  },
+  withCredentials: true, // Add this line
   };
 
   await axios
@@ -118,8 +120,10 @@ export const onRegistrar = (data, callback) => async (dispatch) => {
 
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+
+  },
+  withCredentials: true, // Add this line
   };
 
   await axios
