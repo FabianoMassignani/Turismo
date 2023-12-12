@@ -19,8 +19,9 @@ export const getPacotes = () => async (dispatch) => {
     await axios.get(`${API_URL}/pacote`, {
         headers: {
             'Content-Type': 'application/json',
-            
-        }, 
+
+        },
+        withCredentials: true, // Add this line
     })
         .then(response => {
             dispatch({
