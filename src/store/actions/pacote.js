@@ -66,9 +66,6 @@ export const postPacote = (data, token, callback) => async (dispatch) => {
 export const updatePacote = (data, token, callback) => async (dispatch) => {
     dispatch({ type: UPDATE_PACOTE_REQUEST });
 
-
-    data.passeios = data.passeios.map(key => key);
-
     await axios.put(`${API_URL}/pacote/${data.key}`, data, {
         headers: {
             'Authorization': `Bearer ${token}`

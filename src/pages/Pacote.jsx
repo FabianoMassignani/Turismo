@@ -66,10 +66,18 @@ export const Pacote = () => {
   };
 
   const onEditar = (record) => {
-    const values = form.getFieldsValue();
-    values.key = currentPacote.key;
+    let item = currentPacote;
 
-    dispatch(updatePacote(values, token, callback));
+    const values = form.getFieldsValue();
+
+    item.key = currentPacote.id;
+    item.nome = values.nome;
+    item.preco = values.preco;
+
+    item.passeios = values.passeios.map((key) => key);
+    item.ativo = values.checked;
+
+    dispatch(updatePacote(item, token, callback));
   };
 
   const onExcluir = (record) => {
