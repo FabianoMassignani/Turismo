@@ -11,11 +11,17 @@ export const Login = () => {
   const [openCadastro, setOpenCadastro] = useState(false);
   const userState = useSelector((state) => state.user);
   const email = localStorage.getItem("email");
-  const { loadingU } = userState;
+  const { loadingU, message } = userState;
 
   const callback = () => {
     dispatch(setNavigate("/"));
   };
+
+  useEffect(() => {
+    if (message) {
+      alert(message);
+    }
+  }, [message]);
 
   const onLogin = async (values) => {
     dispatch(onLogar(values, callback));

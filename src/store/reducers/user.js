@@ -8,11 +8,14 @@ import {
   GET_USERS_REQUEST,
   GET_USERS,
   GET_LOGIN_FAIL,
-  GET_USER_FAIL
+  GET_USER_FAIL,
+  POST_REGISTER_FAIL,
+  GET_USERS_FAIL,
+  DELETE_USER_REQUEST,
 } from "../constants/user";
 
 export const userReducer = (
-  state = { user: {}, users: [], token: undefined, loadingU: false },
+  state = { message: "", user: {}, users: [], token: undefined, loadingU: false },
   action
 ) => {
   switch (action.type) {
@@ -52,6 +55,20 @@ export const userReducer = (
         loadingU: false,
         users: action.payload.users,
       }
+    case GET_USERS_FAIL:
+      return {
+        ...state,
+        loadingU: false,
+        message: action.payload.message,
+      }
+    case DELETE_USER_REQUEST:
+      return { ...state, loadingU: true }
+    case POST_REGISTER_FAIL:
+      return {
+        ...state,
+        loadingU: false,
+        message: action.payload.message,
+      }
     case POST_REGISTER_REQUEST:
       return { ...state, loadingU: true }
     case POST_REGISTER:
@@ -66,7 +83,6 @@ export const userReducer = (
         user: {},
       };
     default:
-
       return { ...state }
   }
 };

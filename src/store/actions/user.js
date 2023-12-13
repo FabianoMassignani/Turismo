@@ -5,10 +5,13 @@ import {
   GET_LOGIN,
   POST_REGISTER,
   POST_REGISTER_REQUEST,
+  POST_REGISTER_FAIL,
   GET_USER_REQUEST,
   GET_USER,
+  GET_USER_FAIL,
   GET_USERS_REQUEST,
   GET_USERS,
+  GET_USERS_FAIL,
   DELETE_USER_REQUEST,
   GET_LOGIN_FAIL,
 } from "../constants/user";
@@ -23,8 +26,8 @@ export const onLogar = (data) => async (dispatch) => {
     headers: {
       'Content-Type': 'application/json',
 
-  },
-  withCredentials: true, // Add this line
+    },
+    withCredentials: true, // Add this line
   };
 
   await axios
@@ -102,7 +105,14 @@ export const getUsers = () => async (dispatch) => {
       });
     })
     .catch(error => {
-      console.log(error);
+      dispatch({
+        type: GET_USERS_FAIL,
+        payload: {
+          users: null,
+          message: "Não foi possível carregar os usuários"
+        },
+      });
+
     });
 }
 
@@ -122,8 +132,8 @@ export const onRegistrar = (data, callback) => async (dispatch) => {
     headers: {
       'Content-Type': 'application/json',
 
-  },
-  withCredentials: true, // Add this line
+    },
+    withCredentials: true, // Add this line
   };
 
   await axios
@@ -138,7 +148,15 @@ export const onRegistrar = (data, callback) => async (dispatch) => {
 
       callback();
     })
-    .catch((err) => console.log(err));
+    .catch((err) =>
+      dispatch({
+        type: POST_REGISTER_FAIL,
+        payload: {
+          user: null,
+          message: "Não foi possível cadastrar o usuário"
+        },
+      })
+    );
 }
 
 export const deleteUser = (id, token) => async (dispatch) => {
@@ -153,6 +171,11 @@ export const deleteUser = (id, token) => async (dispatch) => {
       dispatch(getUsers());
     })
     .catch(error => {
-      console.log(error);
+      dispatch({
+        type: DELETE_USER_REQUEST,
+        payload: {
+          message: "Não foi possível deletar o usuário"
+        },
+      });
     });
 }
