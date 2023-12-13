@@ -136,7 +136,7 @@ export const Home = () => {
       dataIndex: "acoes",
       key: "acoes",
       render: (text, record) =>
-        record.ativo &&
+        record?.ativo &&
         identificacao === "cliente" && (
           <div
             style={{
@@ -177,7 +177,7 @@ export const Home = () => {
     return {
       key: item.id,
       nome: item.nome,
-      ativo: item.ativo,
+      ativo: item?.ativo | false,
       preco: item.preco,
       passeiosIds: item.passeios,
     };
@@ -197,7 +197,7 @@ export const Home = () => {
     {
       key: "3",
       label: "Ativo",
-      children: currentPasseio.ativo ? "Sim" : "Não",
+      children: currentPasseio?.ativo ? "Sim" : "Não",
     },
     {
       key: "4",

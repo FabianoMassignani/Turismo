@@ -58,6 +58,8 @@ export const Pacote = () => {
       return item;
     });
 
+    values.ativo = values.checked | false;
+
     dispatch(postPacote(values, token, callback));
 
     form.resetFields();
@@ -66,18 +68,11 @@ export const Pacote = () => {
   };
 
   const onEditar = (record) => {
-    let item = currentPacote;
-
+ 
     const values = form.getFieldsValue();
+    record.ativo = values.checked;
 
-    item.key = currentPacote.id;
-    item.nome = values.nome;
-    item.preco = values.preco;
-
-    item.passeios = values.passeios.map((key) => key);
-    item.ativo = values.checked;
-
-    dispatch(updatePacote(item, token, callback));
+    dispatch(updatePacote(record, token, callback));
   };
 
   const onExcluir = (record) => {
@@ -150,7 +145,7 @@ export const Pacote = () => {
       ...item,
       key: item.id,
       nome: item.nome,
-      ativo: item.ativo,
+      ativo: item?.ativo|false,
       preco: item.preco,
       passeiosNome: passeios.join(", "),
     };
@@ -202,7 +197,7 @@ export const Pacote = () => {
                 nome: currentPacote.nome,
                 preco: currentPacote.preco,
                 passeios: acurrentPacoteP,
-                checked: currentPacote.ativo,
+                checked: currentPacote?.ativo,
               }}
             >
               <PacoteForm passeios={passeios} />
