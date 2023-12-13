@@ -85,7 +85,7 @@ export const Home = () => {
 
     const data = {
       ...values,
-      classificacao: value,
+      classificacao: values.nota,
       idPasseio: currentPasseio.key,
       idUsuario: user.id,
       dataAvaliacao: new Date(),

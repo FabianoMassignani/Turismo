@@ -1,6 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, DatePicker, Checkbox, Form, Radio, Input } from "antd";
+import {
+  Button,
+  DatePicker,
+  Checkbox,
+  Modal,
+  Form,
+  Radio,
+  Input,
+  message,
+} from "antd";
 import { setNavigate } from "../store/actions/ui";
 import { Navbar } from "../components/Navbar";
 import { onRegistrar, onLogar } from "../store/actions/user";
@@ -11,24 +20,26 @@ export const Login = () => {
   const [openCadastro, setOpenCadastro] = useState(false);
   const userState = useSelector((state) => state.user);
   const email = localStorage.getItem("email");
-  const { loadingU, message } = userState;
+  const { loadingU } = userState;
 
   const callback = () => {
     dispatch(setNavigate("/"));
   };
 
-  useEffect(() => {
-    if (message) {
-      alert(message);
-    }
-  }, [message]);
-
   const onLogin = async (values) => {
-    dispatch(onLogar(values, callback));
+    dispatch(onLogar(values, mostrarAlerta));
 
     const { username } = values;
 
     localStorage.setItem("email", username);
+  };
+
+  const mostrarAlerta = (message) => {
+    Modal.info({
+      title: "Alerta",
+      content: message,
+      onOk() {},
+    });
   };
 
   const callbackRegister = () => {
@@ -36,7 +47,7 @@ export const Login = () => {
   };
 
   const onRegister = (values) => {
-    dispatch(onRegistrar(values, callbackRegister));
+    dispatch(onRegistrar(values, callbackRegister, mostrarAlerta));
   };
 
   const onFinishFailed = (errorInfo) => {

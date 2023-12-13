@@ -19,7 +19,8 @@ import {
 import { API_URL } from "../../globalVariables";
 import { setNavigate } from "../../store/actions/ui";
 
-export const onLogar = (data) => async (dispatch) => {
+
+export const onLogar = (data, mostrarAlerta) => async (dispatch) => {
   dispatch({ type: GET_LOGIN_REQUEST });
 
   const config = {
@@ -41,7 +42,7 @@ export const onLogar = (data) => async (dispatch) => {
       });
 
       if (res.data.token)
-        dispatch(getUser(res.data.token, data.username));
+        dispatch(getUser(res.data.token, data.username, mostrarAlerta));
 
 
     })
@@ -53,11 +54,12 @@ export const onLogar = (data) => async (dispatch) => {
           message: "Usuário ou senha inválidos"
         },
       });
+
     }
     );
 }
 
-export const getUser = (token, username) => async (dispatch) => {
+export const getUser = (token, username, mostrarAlerta) => async (dispatch) => {
   dispatch({ type: GET_USER_REQUEST });
 
   await axios.get(`${API_URL}/pessoa/email/${username}`, {
@@ -85,6 +87,8 @@ export const getUser = (token, username) => async (dispatch) => {
           message: "Usuário ou senha inválidos"
         },
       });
+
+      mostrarAlerta("Usuário ou senha inválidos");
     });
 }
 
@@ -116,7 +120,7 @@ export const getUsers = () => async (dispatch) => {
     });
 }
 
-export const onRegistrar = (data, callback) => async (dispatch) => {
+export const onRegistrar = (data, callback, mostrarAlerta) => async (dispatch) => {
   dispatch({ type: POST_REGISTER_REQUEST });
 
   data = {
@@ -155,7 +159,9 @@ export const onRegistrar = (data, callback) => async (dispatch) => {
           user: null,
           message: "Não foi possível cadastrar o usuário"
         },
-      })
+      }),
+
+      mostrarAlerta('Não foi possível cadastrar o usuário')
     );
 }
 

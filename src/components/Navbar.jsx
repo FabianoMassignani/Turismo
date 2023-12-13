@@ -77,7 +77,7 @@ export const Navbar = (props) => {
     },
   ];
 
-  if (token) {
+  if (token && user.email) {
     items.push({
       label: "Logout",
       key: "/logout",
